@@ -1,6 +1,8 @@
 name: Test
 on:
-  workflow_call:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
   code-formatting:
@@ -28,7 +30,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Install system dependencies for hidapi
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libudev-dev libusb-1.0-0-dev
       - name: Install cargo-near CLI
-        run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/near/cargo-near/releases/download/cargo-near-v0.16.0/cargo-near-installer.sh | sh
-      - name: Run cargo test
+        run: cargo install cargo-near --locked
+      - name: Setup kernel parameters
+        run: bash scripts/set_kernel_params.sh
+      - name: Run tests
         run: cargo test
+
