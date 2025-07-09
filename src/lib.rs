@@ -1,11 +1,11 @@
 // Find all our documentation at https://docs.near.org
-use near_sdk::near;
+use near_sdk::{near, AccountId};
 
-// Find all our documentation at https://docs.near.org
-// Define the contract structure
+/// The vault smart contract managing owner access.
 #[near(contract_state)]
 pub struct Contract {
-    // Add your contract state fields here
+    /// Account ID of the vault owner.
+    owner: AccountId,
 }
 
 // Implement the contract structure
