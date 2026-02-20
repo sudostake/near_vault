@@ -9,6 +9,9 @@ See [NEAR docs](https://docs.near.org/smart-contracts/quickstart) for more detai
 # Install Rust: https://www.rust-lang.org/tools/install
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+# Install a NEAR-compatible compiler used by project scripts
+rustup toolchain install 1.86.0
+
 # Contracts will be compiled to wasm, so we need to add the wasm target
 rustup target add wasm32-unknown-unknown
 
@@ -20,7 +23,13 @@ curl --proto '=https' --tlsv1.2 -LsSf https://github.com/near/cargo-near/release
 ```
 
 ```bash
-cargo near build
+bash scripts/build_contract.sh
+```
+
+## How to Lint Locally?
+
+```bash
+bash scripts/lint_contract.sh
 ```
 
 ## How to Test Locally?
