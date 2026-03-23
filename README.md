@@ -2,37 +2,48 @@
 
 Stake. Earn. Trade
 
-## How to Build Locally?
-See [NEAR docs](https://docs.near.org/smart-contracts/quickstart) for more details.
+## Local Setup
+
+See [NEAR docs](https://docs.near.org/smart-contracts/quickstart) for ecosystem background. To bootstrap this repository:
 
 ```zsh
-# Install Rust: https://www.rust-lang.org/tools/install
+# Install Rust first: https://www.rust-lang.org/tools/install
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-# Contracts will be compiled to wasm, so we need to add the wasm target
-rustup target add wasm32-unknown-unknown
-
-# Install NEAR CLI-RS to deploy and interact with the contract
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/near/near-cli-rs/releases/latest/download/near-cli-rs-installer.sh | sh
-
-# Install cargo near to help building the contract
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/near/cargo-near/releases/latest/download/cargo-near-installer.sh | sh
 ```
 
 ```bash
-cargo near build
+bash scripts/setup.sh
 ```
 
-## How to Test Locally?
+The setup script installs:
+
+- the host Rust toolchain used for formatting and unit tests
+- the pinned contract toolchain used for WASM linting and builds
+- `cargo-near` for contract packaging
+
+On Linux, installing `cargo-near` may also require system packages such as `pkg-config`, `libudev-dev`, and `libusb-1.0-0-dev`.
+
+## Local Checks
 
 ```bash
-cargo test
+bash scripts/lint_contract.sh
+bash scripts/build_contract.sh
+cargo test --locked
 ```
 
-## How to Deploy?
+`bash scripts/build_contract.sh reproducible-wasm` can be used to verify the reproducible build path locally from a clean git tree when Docker is available.
 
-Deployment is automated with GitHub Actions CI/CD pipeline.
-To deploy manually, install [`cargo-near`](https://github.com/near/cargo-near) and run:
+## Contract API
+
+The setup branch now ships a minimal ownership contract:
+
+- `new(owner)` initializes the contract
+- `get_owner()` returns the current owner
+- `transfer_ownership(new_owner)` updates ownership and is owner-only
+
+## Deployment
+
+No automated deployment workflow is configured yet. To deploy manually, install and authenticate [NEAR CLI](https://near.cli.rs), then run:
 
 ```bash
 cargo near deploy build-reproducible-wasm <account-id>
