@@ -67,6 +67,10 @@ jobs:
           rustup toolchain install "${HOST_TOOLCHAIN}" --profile minimal
           rustup default "${HOST_TOOLCHAIN}"
           rustup toolchain install "${CONTRACT_TOOLCHAIN}" --profile minimal --target wasm32-unknown-unknown
+      - name: Install system dependencies for cargo-near
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libudev-dev libusb-1.0-0-dev
       - name: Install cargo-near CLI
         run: cargo install cargo-near --version "${CARGO_NEAR_VERSION}" --locked
       - name: Build contract with pinned toolchain

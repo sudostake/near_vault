@@ -21,6 +21,8 @@ The setup script installs:
 - the pinned contract toolchain used for WASM linting and builds
 - `cargo-near` for contract packaging
 
+On Linux, installing `cargo-near` may also require system packages such as `pkg-config`, `libudev-dev`, and `libusb-1.0-0-dev`.
+
 ## Local Checks
 
 ```bash
